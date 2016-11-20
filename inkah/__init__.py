@@ -13,10 +13,14 @@ This module provides shared variables and the core Inkah classes.
 __version__ = '0.0.1'
 
 import socket
+import uuid
 
 TRACE_ID_HEADER = 'X-Inkah-Trace-ID'
-SPAN_ID_HEADER = 'X-Inkah-Span-ID'
 PARENT_SPAN_ID_HEADER = 'X-Inkah-Parent-Span-ID'
+
+
+def generate_id():
+    return str(uuid.uuid1())
 
 
 class InkahSpan(object):
@@ -46,7 +50,7 @@ class InkahSpan(object):
                 type=message_type, message=message
                 )
 
-            InkahSpan._publish_socket.sendto(message, ('127.0.0.1', 5005))
+            InkahSpan._publish_socket.sendto(message, ('127.0.0.1', 9800))
 
     def publish_begin(self):
         if self.id:

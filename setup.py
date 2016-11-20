@@ -26,14 +26,14 @@ with open('inkah/__init__.py', 'r') as fd:
 if not version:
     raise RuntimeError('Cannot find version information')
 
-with open('README.md', 'r', 'utf-8') as f:
-    readme = f.read()
+# with open('README.md', 'r', 'utf-8') as f:
+#     readme = f.read()
 
 setup(
     name='inkah',
     version=version,
     description='Inkah utilities for Python.',
-    long_description=readme,
+    # long_description=readme,
     author='Mike Leonard',
     author_email='mike.r.leonard@gmail.com',
     url='https://github.com/mleonard87/inkah-python',

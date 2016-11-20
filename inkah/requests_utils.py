@@ -11,7 +11,16 @@ requests between services.
 :license: MIT, see LICENSE for more details.
 """
 
+from . import TRACE_ID_HEADER, PARENT_SPAN_ID_HEADER
+from flask import g
+
 import requests
 
-def get(url):
-    requests.get(url, headers={})
+
+def get(*args, **kwargs):
+    span = g.inkah_span
+    headers = kwargs.get('headers', {})
+    headers[TRACE_ID_HEADER] = span.trace_id
+    headers[PARENT_SPAN_ID_HEADER] = span.id
+    kwargs['headers'] = headers
+    requests.get(*args, **kwargs)
