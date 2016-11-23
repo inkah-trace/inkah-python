@@ -9,41 +9,47 @@ This module provides utilities for using Inkah with Flask.
 :copyright: (c) 2016 by Mike Leonard.
 :license: MIT, see LICENSE for more details.
 """
-from . import TRACE_ID_HEADER, PARENT_SPAN_ID_HEADER, InkahSpan, generate_id
-
-from flask import Flask as FlaskFlask
+from . import TRACE_ID_HEADER, PARENT_SPAN_ID_HEADER, InkahDummySpan, InkahSpan
+from .utils import generate_id
 from flask import request, g
 
 import random
 
 
 def before_request():
-    # Use this to sample just a few requests rather than all of them.
-    ri = random.randint(0, 3)
-    if 0 == 0:
-        span_id = generate_id()
-        trace_id = request.headers.get(TRACE_ID_HEADER, generate_id())
-        parent_span_id = request.headers.get(PARENT_SPAN_ID_HEADER)
-        inkah_span = InkahSpan(trace_id, span_id, parent_span_id)
-        inkah_span.publish_begin()
-    else:
-        inkah_span = InkahSpan()
+    trace_id = request.headers.get(TRACE_ID_HEADER, None)
 
+    # No trace ID so this must be a root request.
+    if trace_id is None:
+        # Randomly decide if we are to sample this request.
+        ri = random.randint(0, 3)
+        if 0 != 0:
+            g.inkah_span = InkahDummySpan()
+            return
+        else:
+            trace_id = generate_id()
+            parent_span_id = None
+    else:
+        parent_span_id = request.headers.get(PARENT_SPAN_ID_HEADER, None)
+
+    inkah_span = InkahSpan(trace_id, parent_span_id)
+    inkah_span.begin()
     g.inkah_span = inkah_span
 
 
 def after_request(response):
-    g.inkah_span.publish_end()
+    g.inkah_span.end()
     return response
 
 
-def Flask(*args, **kwargs):
-    # Create the app and bind the methods to call before and after each request.
-    app = FlaskFlask(*args, **kwargs)
-    app.before_request(before_request)
-    app.after_request(after_request)
-    # Set up the socket on InkahSpan.
-    InkahSpan.init_publish_socket()
-    InkahSpan.program_name = args[0]
+class Trace(object):
+    def __init__(self, app):
+        self.app = app
+        self.init_app(app)
+        InkahSpan.init(app)
 
-    return app
+    def init_app(self, app):
+        app.config.setdefault('INKAH_DAEMON_HOST', '127.0.0.1')
+        app.config.setdefault('INKAH_DAEMON_PORT', 9800)
+        app.before_request(before_request)
+        app.after_request(after_request)
