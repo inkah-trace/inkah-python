@@ -3,6 +3,7 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -19,15 +20,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='event.proto',
   package='inkah',
   syntax='proto3',
-  serialized_pb=_b('\n\x0b\x65vent.proto\x12\x05inkah\"\xcb\x01\n\x05\x45vent\x12\x0f\n\x07traceId\x18\x01 \x01(\t\x12\x0e\n\x06spanId\x18\x02 \x01(\t\x12\x14\n\x0cparentSpanId\x18\x03 \x01(\t\x12\x11\n\trequestId\x18\x04 \x01(\t\x12)\n\teventType\x18\x05 \x01(\x0e\x32\x16.inkah.Event.EventType\"M\n\tEventType\x12\x0e\n\nSPAN_BEGIN\x10\x00\x12\x0c\n\x08SPAN_END\x10\x01\x12\x11\n\rREQUEST_BEGIN\x10\x02\x12\x0f\n\x0bREQUEST_END\x10\x03\"\x0f\n\rEventResponse2>\n\x05Inkah\x12\x35\n\rRegisterEvent\x12\x0c.inkah.Event\x1a\x14.inkah.EventResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0b\x65vent.proto\x12\x05inkah\"v\n\x05\x45vent\x12\x0f\n\x07traceId\x18\x01 \x01(\t\x12\x0e\n\x06spanId\x18\x02 \x01(\t\x12\x14\n\x0cparentSpanId\x18\x03 \x01(\t\x12\x11\n\trequestId\x18\x04 \x01(\t\x12#\n\teventType\x18\x05 \x01(\x0e\x32\x10.inkah.EventType\"\x0f\n\rEventResponse*M\n\tEventType\x12\x0e\n\nSPAN_BEGIN\x10\x00\x12\x0c\n\x08SPAN_END\x10\x01\x12\x11\n\rREQUEST_BEGIN\x10\x02\x12\x0f\n\x0bREQUEST_END\x10\x03\x32>\n\x05Inkah\x12\x35\n\rRegisterEvent\x12\x0c.inkah.Event\x1a\x14.inkah.EventResponse\"\x00\x42\nZ\x08protobufb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-
-
-_EVENT_EVENTTYPE = _descriptor.EnumDescriptor(
+_EVENTTYPE = _descriptor.EnumDescriptor(
   name='EventType',
-  full_name='inkah.Event.EventType',
+  full_name='inkah.EventType',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -50,10 +49,17 @@ _EVENT_EVENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=149,
-  serialized_end=226,
+  serialized_start=159,
+  serialized_end=236,
 )
-_sym_db.RegisterEnumDescriptor(_EVENT_EVENTTYPE)
+_sym_db.RegisterEnumDescriptor(_EVENTTYPE)
+
+EventType = enum_type_wrapper.EnumTypeWrapper(_EVENTTYPE)
+SPAN_BEGIN = 0
+SPAN_END = 1
+REQUEST_BEGIN = 2
+REQUEST_END = 3
+
 
 
 _EVENT = _descriptor.Descriptor(
@@ -103,7 +109,6 @@ _EVENT = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _EVENT_EVENTTYPE,
   ],
   options=None,
   is_extendable=False,
@@ -111,8 +116,8 @@ _EVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=23,
-  serialized_end=226,
+  serialized_start=22,
+  serialized_end=140,
 )
 
 
@@ -135,14 +140,14 @@ _EVENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=228,
-  serialized_end=243,
+  serialized_start=142,
+  serialized_end=157,
 )
 
-_EVENT.fields_by_name['eventType'].enum_type = _EVENT_EVENTTYPE
-_EVENT_EVENTTYPE.containing_type = _EVENT
+_EVENT.fields_by_name['eventType'].enum_type = _EVENTTYPE
 DESCRIPTOR.message_types_by_name['Event'] = _EVENT
 DESCRIPTOR.message_types_by_name['EventResponse'] = _EVENTRESPONSE
+DESCRIPTOR.enum_types_by_name['EventType'] = _EVENTTYPE
 
 Event = _reflection.GeneratedProtocolMessageType('Event', (_message.Message,), dict(
   DESCRIPTOR = _EVENT,
@@ -159,6 +164,8 @@ EventResponse = _reflection.GeneratedProtocolMessageType('EventResponse', (_mess
 _sym_db.RegisterMessage(EventResponse)
 
 
+DESCRIPTOR.has_options = True
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('Z\010protobuf'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
