@@ -15,7 +15,7 @@ from flask import Flask
 from inkah.flask_utils import Trace
 
 app = Flask(__name__)
-trace = Trace(app)
+trace = Inkah(app)
 
 # Accessing the current InkahSpan and creating an annotation
 from flask import g

@@ -1,7 +1,4 @@
-click==6.6
-Flask==0.11.1
-itsdangerous==0.24
-Jinja2==2.8
-MarkupSafe==0.23
-requests==2.12.1
-Werkzeug==0.11.11
+grpcio==1.2.1
+grpcio-tools==1.2.1
+protobuf==3.2.0
+wrapt==1.10.10
