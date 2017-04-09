@@ -4,12 +4,8 @@ import wrapt
 
 from flask import request, g
 
-from inkah import Span
+from inkah import Span, TRACE_ID_HEADER, SPAN_ID_HEADER, PARENT_SPAN_ID_HEADER
 from inkah.utils import is_installed, generate_id
-
-TRACE_ID_HEADER = 'X-Inkah-Trace-Id'
-PARENT_SPAN_ID_HEADER = 'X-Inkah-Parent-Span-Id'
-REQUEST_ID_HEADER = 'X-Inkah-Request=Id'
 
 
 class Inkah(object):
@@ -25,9 +21,9 @@ class Inkah(object):
 
     def before_request(self):
         trace_id = request.headers.get(TRACE_ID_HEADER)
+        span_id = request.headers.get(SPAN_ID_HEADER)
         parent_span_id = request.headers.get(PARENT_SPAN_ID_HEADER)
-        request_id = request.headers.get(REQUEST_ID_HEADER)
-        span = Span(trace_id, parent_span_id, request_id)
+        span = Span(trace_id, span_id, parent_span_id)
         g.inkah_span = span
 
     def after_request(self, response):
@@ -36,15 +32,15 @@ class Inkah(object):
 
     def requests_header_injector(self, wrapped, instance, args, kwargs):
         headers = kwargs.pop('headers', None) or {}
-        request_id = generate_id()
+        span_id = generate_id()
         headers.update({
             TRACE_ID_HEADER: g.inkah_span.trace_id,
-            PARENT_SPAN_ID_HEADER: g.inkah_span.id,
-            REQUEST_ID_HEADER: request_id,
+            SPAN_ID_HEADER: span_id,
+            PARENT_SPAN_ID_HEADER: g.inkah_span.span_id,
         })
-        g.inkah_span.begin_request(request_id)
+        g.inkah_span.begin_request(span_id)
         resp = wrapped(*args, headers=headers, **kwargs)
-        g.inkah_span.complete_request(request_id)
+        g.inkah_span.complete_request(span_id)
         return resp
 
     def monkey_patch_requests(self):
@@ -56,10 +52,3 @@ class Inkah(object):
             wrapt.wrap_function_wrapper('requests', 'put', self.requests_header_injector)
             wrapt.wrap_function_wrapper('requests', 'delete', self.requests_header_injector)
             wrapt.wrap_function_wrapper('requests', 'options', self.requests_header_injector)
-
-# bes001 /account
-    # ID: None
-    # bes003 /depl
-    # ID: 123
-        # bes003 /depl
-        # ID: 123

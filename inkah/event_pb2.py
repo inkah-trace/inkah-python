@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='event.proto',
   package='inkah',
   syntax='proto3',
-  serialized_pb=_b('\n\x0b\x65vent.proto\x12\x05inkah\"v\n\x05\x45vent\x12\x0f\n\x07traceId\x18\x01 \x01(\t\x12\x0e\n\x06spanId\x18\x02 \x01(\t\x12\x14\n\x0cparentSpanId\x18\x03 \x01(\t\x12\x11\n\trequestId\x18\x04 \x01(\t\x12#\n\teventType\x18\x05 \x01(\x0e\x32\x10.inkah.EventType\"\x0f\n\rEventResponse*M\n\tEventType\x12\x0e\n\nSPAN_BEGIN\x10\x00\x12\x0c\n\x08SPAN_END\x10\x01\x12\x11\n\rREQUEST_BEGIN\x10\x02\x12\x0f\n\x0bREQUEST_END\x10\x03\x32>\n\x05Inkah\x12\x35\n\rRegisterEvent\x12\x0c.inkah.Event\x1a\x14.inkah.EventResponse\"\x00\x42\nZ\x08protobufb\x06proto3')
+  serialized_pb=_b('\n\x0b\x65vent.proto\x12\x05inkah\"c\n\x05\x45vent\x12\x0f\n\x07traceId\x18\x01 \x01(\t\x12\x0e\n\x06spanId\x18\x02 \x01(\t\x12\x14\n\x0cparentSpanId\x18\x03 \x01(\t\x12#\n\teventType\x18\x05 \x01(\x0e\x32\x10.inkah.EventType\"\x0f\n\rEventResponse*M\n\tEventType\x12\x0e\n\nSPAN_BEGIN\x10\x00\x12\x0c\n\x08SPAN_END\x10\x01\x12\x11\n\rREQUEST_BEGIN\x10\x02\x12\x0f\n\x0bREQUEST_END\x10\x03\x32>\n\x05Inkah\x12\x35\n\rRegisterEvent\x12\x0c.inkah.Event\x1a\x14.inkah.EventResponse\"\x00\x42\nZ\x08protobufb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -49,8 +49,8 @@ _EVENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=159,
-  serialized_end=236,
+  serialized_start=140,
+  serialized_end=217,
 )
 _sym_db.RegisterEnumDescriptor(_EVENTTYPE)
 
@@ -91,14 +91,7 @@ _EVENT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='requestId', full_name='inkah.Event.requestId', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='eventType', full_name='inkah.Event.eventType', index=4,
+      name='eventType', full_name='inkah.Event.eventType', index=3,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -117,7 +110,7 @@ _EVENT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=22,
-  serialized_end=140,
+  serialized_end=121,
 )
 
 
@@ -140,8 +133,8 @@ _EVENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=142,
-  serialized_end=157,
+  serialized_start=123,
+  serialized_end=138,
 )
 
 _EVENT.fields_by_name['eventType'].enum_type = _EVENTTYPE
